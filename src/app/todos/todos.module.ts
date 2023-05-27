@@ -4,6 +4,9 @@ import { HeaderComponent } from "./components/header/header.component";
 import { MainComponent } from "./components/main/main.component";
 import { TodosComponent } from "./components/todos.component";
 import { TodosService } from "./services/todos.service";
+import { CommonModule } from "@angular/common";
+import { TodoComponent } from "./components/todo/todo.component";
+
  const routes : Routes =[
     {path: '',
     component: TodosComponent},
@@ -11,8 +14,8 @@ import { TodosService } from "./services/todos.service";
     component: HeaderComponent}
  ]
 @NgModule({
-    declarations:[TodosComponent, HeaderComponent,MainComponent],
-    imports: [RouterModule.forChild(routes)],
+    declarations:[TodosComponent, HeaderComponent,MainComponent, TodoComponent],
+    imports: [RouterModule.forChild(routes),CommonModule ],
     providers: [TodosService]
 })
 

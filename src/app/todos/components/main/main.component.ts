@@ -15,14 +15,17 @@ export class MainComponent {
   visibleTodos$!: Observable<TodoInterface[]>;
   noTodoClass$!: Observable<boolean>;
   isAllTodosSelected$: Observable<boolean>;
+  editingId: string | null = null;
 
   constructor(private todosService: TodosService) {
     this.isAllTodosSelected$ = this.todosService.todos$.pipe(
       map((todos) => todos.every((todo) => todo.isCompleted))
     );
+
     this.noTodoClass$ = this.todosService.todos$.pipe(
       map((todos) => todos.length === 0)
     );
+
     this.visibleTodos$ = combineLatest(
       this.todosService.filter$,
       this.todosService.todos$
@@ -37,9 +40,14 @@ export class MainComponent {
       })
     );
   }
-  toggleAllTodos(event: Event): void {
+  toggleAllTodos$(event: Event): void {
     const target = event.target as HTMLInputElement
-    this.todosService.toggleAll(target.checked)
+   const isCompleted = target.checked;
+   this.todosService.toggleAll(target.checked)
+}
+
+  setEditingId(editingId: string | null):void{
+    this.editingId = editingId;
   }
 }
 
@@ -48,3 +56,4 @@ export class MainComponent {
 // noTodoClass$! - dodajemy wykrzyknik, żeby typ nie był null-em
 //pipe() - Funkcja przyjmuje jako argumenty funkcje, które chcesz połączyć, i zwraca nową funkcję, która po wykonaniu uruchamia złożone funkcje w sekwencji.
 // toggleAll - funkcja pochodząca z service
+//setEditingId- funkcja, która pozwala odświeżyć wpisaną rzecz na listę

@@ -15,21 +15,58 @@ export class TodosService {
       id: Math.random().toString(16),
     };
     const updatedTodos = [...this.todos$.getValue(), newTodo]; //to jest coś do backend
+    //const updatedTodos = [...this.todos$.getValue()]
     this.todos$.next(updatedTodos);
   }
 
   toggleAll(isCompleted: boolean): void {
-   // console.log(isCompleted, 'dudu');
+    console.log(isCompleted, 'dudu');
     const updatedTodos = this.todos$.getValue().map((todo) => {
-    //   return {
-    //     ...todo,
-    //     isCompleted,
-    //   };
-      console.log(isCompleted)
-      console.log(updatedTodos)
+      return {
+        ...todo,
+        isCompleted
+      };
     });
-
+    this.todos$.next(updatedTodos);
     console.log('update', updatedTodos);
+  }
+
+  changeFilter(filterName: FilterEnum): void {
+    this.filter$.next(filterName);
+  }
+
+  changeTodo(id: string, text: string): void {
+    const updatedTodos = this.todos$.getValue().map((todo) => {
+      if (todo.id === id) {
+        return {
+          ...todo,
+          text,
+        };
+      }
+      return todo;
+    });
+    this.todos$.next(updatedTodos);
+  }
+
+  removeTodo(id: string): void {
+    const updatedTodos = this.todos$
+      .getValue()
+      .filter((todo) => todo.id !== id);
+
+    this.todos$.next(updatedTodos);
+  }
+
+  toggleTodo(id: string):void{
+    const updatedTodos = this.todos$.getValue().map((todo) => {
+      if(todo.id === id){
+        return {
+          ...todo,
+          isCompleted: !todo.isCompleted
+        }
+      }
+      return todo;   
+  });
+    this.todos$.next(updatedTodos);
   }
 }
 
